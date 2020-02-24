@@ -23,6 +23,27 @@
 				</td>
 				<td><%= link_to @book.title, @book %></td>
 				<td><%= @book.body %></td>
+
+				<!-- いいね機能 -->
+				<% if @book.favorited_by?(current_user) %>
+				  <td>
+				    <%= link_to book_favorites_path(@book), method: :delete do %>
+				      <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+				      <%= @book.favorites.count %> いいね
+				    <% end %>
+				  </td>
+				<% else %>
+				  <td>
+				    <%= link_to book_favorites_path(@book), method: :post do %>
+				      <i class="fa fa-heart-o" aria-hidden="true"></i>
+				      <%= @book.favorites.count %> いいね
+				    <% end %>
+				  </td>
+				<% end %>
+				<!-- ここまで -->
+
+				<td><%= @book.book_comments.count %>件コメント</td>
+
 			<% if @book.user == current_user %>
 				<td><%= link_to "Edit",edit_book_path(@book), class: "btn-sm btn-success edit_book_#{@book.id}" %></td>
 				<td><%= link_to "Destroy",@book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %></td>
@@ -30,6 +51,36 @@
 			</tr>
 		</table>
 
+		<!-- コメント機能 -->
+		<% @book.book_comments.each do |book_comment| %>
+		    <div class="row">
+			    <table class="table">
+			    	<tr>
+			    		<td><%= book_comment.user.name %></td>
+			    		<td><%= book_comment.created_at.strftime('%Y/%m/%d') %></td>
+			    		<td><%= book_comment.comment %></td>
+			    	<% if book_comment.user == current_user %>
+			    		<td><%= link_to "Destroy",book_book_comments_path(@book), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger" %></td>
+			    	<% else %>
+			    		<td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+			    	<% end %>
+			    	</tr>
+			    </table>
+			</div>
+		<% end %>
+		<!-- ここまで -->
+
+		<!-- コメント入力フォーム -->
+			<%= form_for [@book, @book_comment] do |f| %>
+				<div class="row">
+				    <div class="col-sm-12">
+				        <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
+				    </div>
+				</div>
+				<%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+			<% end %>
+
+		<!-- ここまで -->
 	</div>
 </div>
 
