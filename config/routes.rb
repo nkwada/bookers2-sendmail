@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   get 'home/about'
+  get 'search', to: 'searches#search'
  resources :users do
     member do
      get :following, :followers
