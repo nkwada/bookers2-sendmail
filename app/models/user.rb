@@ -21,6 +21,10 @@ class User < ApplicationRecord
   validates :name, length: {maximum: 20, minimum: 2}
   validates :introduction, length: {maximum: 50}
 
+
+
+
+
   # ユーザーをフォローする
   def follow(other_user)
     following << other_user

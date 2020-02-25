@@ -1,15 +1,9 @@
 class ApplicationController < ActionController::Base
 	before_action :authenticate_user!, except: [:top, :about]
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_search
 	#デバイス機能実行前にconfigure_permitted_parametersの実行をする。
 	protect_from_forgery with: :exception
 
-
-  def set_search
-    @q = User.ransack(params[:q])
-    @q.build_condition if @q.conditions.empty?
-  end
 
   protected
   def after_sign_in_path_for(resource)

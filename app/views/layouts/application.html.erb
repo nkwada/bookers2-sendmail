@@ -40,27 +40,18 @@
 
     <!-- 検索窓の設置 -->
 <% if user_signed_in? %>
-    <div class="row">
-      <div class="col-md-offset-4">
-    <%= search_form_for @q, url: search_path do |f| %>
-    <!-- ここで検索するカラムを指定-->
-    <%= f.condition_fields do |c| %>
-      <%= c.attribute_fields do |a| %>
-        <%= a.attribute_select associations: [:books] %>
-      <% end %>
-
-      <%= c.predicate_select only: [:eq, :cont, :start, :end] %>
-
-      <!-- ここで曖昧検索(cont)を指定。これはc.hidden_field :p, value:を使って絞り込むことが可能-->
-      <%= c.hidden_field :p, value: "cont" %>
-      <%= c.value_fields do |v| %>
-        <%= v.search_field :value, placeholder: '検索ワードを入力' %>
-      <% end %>
-    <% end %>
-    <%= f.submit '検索' %>
+<div class="row">
+  <div class="col-md-offset-5">
+    <%= form_with url: search_path,:method => 'get',local: true do |f| %>
+      <%= f.select :selected, [['User','User'],['Book','Book']] %>
+      <%= f.select :method, [['完全一致','1'],['前方一致','2'],['後方一致','3'],['部分一致','4']] %>
+      <%= text_field_tag :search %>
+      <%= submit_tag 'Search', :name => nil %>
     <% end %>
   </div>
-  </div>
+</div>
+
+
 <% end %>
     <!-- 検索窓の設置 -->
     <div class="container">
