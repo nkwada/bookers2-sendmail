@@ -1,15 +1,38 @@
 <table class="table">
-		<tr><%= attachment_image_tag(@user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+		<tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
 
 		<tr>
 			<th>name</th>
-			<th><%= @user.name %></th>
+			<th><%= user.name %></th>
 		</tr>
 
 		<tr>
 			<th>introduction</th>
-			<th><%= @user.introduction %></th>
+			<th><%= user.introduction %></th>
 		</tr>
+
+		<% @user ||= current_user %>
+		<tr>
+			<th>follows</th>
+			<th>
+				<a href="<%= following_user_path(@user) %>">
+    				<strong id="following" class="stat"><%= @user.following.count %></strong>	following</a></th>
+		</tr>
+
+		<tr>
+			<th>followers</th>
+			<th>
+			<a href="<%= followers_user_path(@user) %>">
+				<strong id="followers" class="stat"><%= @user.followers.count %></strong>		followers</a></th>
+		</tr>
+
+		<tr>
+			<th><%= render 'users/follow_form', user: @user  %></th>
+		</tr>
+
+
+
+</div>
 </table>
 
 <div class="row">
