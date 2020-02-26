@@ -1,0 +1,16 @@
+<% book.book_comments.each do |book_comment| %>
+    <div class="row">
+	    <table class="table">
+	    	<tr>
+	    		<td><%= book_comment.user.name %></td>
+	    		<td><%= book_comment.created_at.strftime('%Y/%m/%d') %></td>
+	    		<td><%= book_comment.comment %></td>
+	    	<% if book_comment.user == current_user %>
+	    		<td><%= link_to "Destroy",book_book_comments_path(book_comment.book.id, :comment_id => book_comment.id ), method: :delete, remote: true, class: "btn-sm btn-danger" %></td>
+	    	<% else %>
+	    		<td></td>
+	    	<% end %>
+	    	</tr>
+	    </table>
+	</div>
+<% end %>

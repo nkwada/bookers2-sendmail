@@ -25,21 +25,9 @@
 				<td><%= @book.body %></td>
 
 				<!-- いいね機能 -->
-				<% if @book.favorited_by?(current_user) %>
-				  <td>
-				    <%= link_to book_favorites_path(@book), method: :delete do %>
-				      <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
-				      <%= @book.favorites.count %> いいね
-				    <% end %>
-				  </td>
-				<% else %>
-				  <td>
-				    <%= link_to book_favorites_path(@book), method: :post do %>
-				      <i class="fa fa-heart-o" aria-hidden="true"></i>
-				      <%= @book.favorites.count %> いいね
-				    <% end %>
-				  </td>
-				<% end %>
+				<td id="favorite-<%= @book.id %>">
+					<%= render 'books/favorite', book: @book %>
+				</td>
 				<!-- ここまで -->
 
 				<td><%= @book.book_comments.count %>件コメント</td>
@@ -52,33 +40,14 @@
 		</table>
 
 		<!-- コメント機能 -->
-		<% @book.book_comments.each do |book_comment| %>
-		    <div class="row">
-			    <table class="table">
-			    	<tr>
-			    		<td><%= book_comment.user.name %></td>
-			    		<td><%= book_comment.created_at.strftime('%Y/%m/%d') %></td>
-			    		<td><%= book_comment.comment %></td>
-			    	<% if book_comment.user == current_user %>
-			    		<td><%= link_to "Destroy",book_book_comments_path(book_comment.id), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger" %></td>
-			    	<% else %>
-			    		<td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
-			    	<% end %>
-			    	</tr>
-			    </table>
-			</div>
-		<% end %>
+		<div id="comments_area">
+			<%= render partial: 'book_comments/index', locals: { book: @book } %>
+		</div>
 		<!-- ここまで -->
 
 		<!-- コメント入力フォーム -->
-			<%= form_for [@book, @book_comment] do |f| %>
-				<div class="row">
-				    <div class="col-sm-12">
-				        <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
-				    </div>
-				</div>
-				<%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
-			<% end %>
+      	<%= render partial: 'book_comments/form', locals: { book: @book, book_comment: @book_comment } %>
+
 
 		<!-- ここまで -->
 	</div>
