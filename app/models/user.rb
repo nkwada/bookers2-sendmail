@@ -24,7 +24,7 @@ class User < ApplicationRecord
 
 
 def full_address
-   prefecture_name + address_city + address_street
+   prefecture_name + address_city + address_street + address_building
 end
 include JpPrefecture
  jp_prefecture :prefecture_code
