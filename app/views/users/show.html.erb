@@ -41,5 +41,68 @@
 		<!--books一覧 -->
 	</div>
 
+<!-- Mapを表示 -->
+<% if current_user == @user  %>
+<h2>gmap</h2>
+<div id='map'></div>
+<% end %>
+
+<style>
+#map{
+  height: 400px;
+}
+</style>
+
+<script type="text/javascript">
+  function initMap() {
+    var geocoder = new google.maps.Geocoder();
+	var address = '<%= @user.full_address %>';
+	var location ='';
+    console.log(address);
+
+	geocoder.geocode({'address': address}, function(results, status) {
+    	if (status === google.maps.GeocoderStatus.OK) { 
+        	location = results[0].geometry.location;
+           	console.log(location);
+
+    		var map = new google.maps.Map(document.getElementById('map'), {
+      			zoom: 15,
+      			center: location
+    		});
+
+
+    		var contentString = '住所：<%= @user.address_city %><%= @user.address_street %>';
+    		var infowindow = new google.maps.InfoWindow({
+      			content: contentString
+    		});
+
+    		var marker = new google.maps.Marker({
+      			position:location,
+      			map: map,
+      			title: contentString
+    		});
+    		marker.addListener('click', function() {
+      			infowindow.open(map, marker);
+    		});
+
+        } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+
+  }
+
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['API_KEY'] %>&callback=initMap">
+</script>
+
+
+
+
+
+<!-- Mapを表示 -->
+
+
 </div>
 
