@@ -15,7 +15,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     SignupMailer.send_when_signup(@user).deliver
     end
   end
-
   # GET /resource/edit
   # def edit
   #   super

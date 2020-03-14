@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'rooms/show'
   devise_for :users, :controllers => {
  :registrations => 'users/registrations'
 }
@@ -14,6 +15,7 @@ Rails.application.routes.draw do
   	resource :favorites, only: [:create, :destroy]
   	resource :book_comments, only: [:create, :destroy]
   end
+  resources :rooms
 
   root 'home#top'
 end
